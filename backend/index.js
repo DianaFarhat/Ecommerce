@@ -1,23 +1,14 @@
-const mongoose = require('mongoose');
-require('dotenv').config({ path: './backend/.env' }); // Specify the correct path to your .env file
+const express= require('express');
+const { connectToDatabase } = require('./database');
+const app= express();
+const DB= require('./database').connectToDatabase;
 
-console.log('DB_URI:', process.env.DB_URI); // Debug to confirm variable loading
-
-const DB_URI = process.env.DB_URI;
-
-async function connectToDatabase() {
-    try {
-        await mongoose.connect(DB_URI, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-        });
-        console.log('Connection to MongoDB established successfully!');
-    } catch (error) {
-        console.error('Failed to connect to MongoDB:', error);
-    }
-}
-
-// Run the connection test
+// Run the database connection
 connectToDatabase();
 
+app.use(express.json());
 
+//Set up port
+app.listen(3000, ()=>{
+    console.log('Listening on port 3000')
+})
